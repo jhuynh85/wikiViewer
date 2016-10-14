@@ -15,3 +15,11 @@
 	max-width: 300px;
 	margin: 0 auto;
 }
+
+.articles {
+	text-align: left;
+}
+
+h3 {
+	font-weight: bold;
+}
