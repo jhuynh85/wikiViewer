@@ -2,7 +2,6 @@
 	margin-top: 100px;
 	min-width: 200px;
 	text-align: center;
-	background-color: yellow;
 }
 
 .main {
@@ -17,9 +16,19 @@
 }
 
 .articles {
+	font-family: "Roboto", sans-serif;
 	text-align: left;
+}
+
+.entry {
+	background-color: #eee;
+	padding: 5px;
 }
 
 h3 {
 	font-weight: bold;
+}
+
+a:hover {
+	text-decoration: none;
 }

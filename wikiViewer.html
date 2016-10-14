@@ -1,86 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
 
-	<title>Joseph Huynh | Wikipedia Viewer</title>
+  <title>Joseph Huynh | Wikipedia Viewer</title>
 
-	<!-- font -->
-	<link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
 
-	<!--jQuery-->
-	<script   src="http://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+  <!--jQuery-->
+  <script   src="http://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
 
-	<!-- Bootstrap -->
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	
-	<link rel="stylesheet" href="css/wikiViewer.css">
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  
+  <link rel="stylesheet" href="css/wikiViewer.css">
 
-	<script type="text/javascript">
-		$(document).ready(function(){
+  <script type="text/javascript">
+    $(document).ready(function(){
 
-			// Open random article
-			$('.random-button').click(function(){
-				window.open('https://en.wikipedia.org/wiki/Special:Random', '_blank');
-			});
+      // Open random article
+      $('.random-button').click(function(){
+        window.open('https://en.wikipedia.org/wiki/Special:Random', '_blank');
+      });
 
-			$('#input-box').keyup(function(event){
-				if (event.keyCode == 13){
-					search($('#input-box').val());
-				}
-			});
+      $('#input-box').keyup(function(event){
+        if (event.keyCode == 13){
+          search($('#input-box').val());
+        }
+      });
 
-			$('#go-button').click(function(event){
-				search($('#input-box').val());
-			});
+      $('#go-button').click(function(event){
+        search($('#input-box').val());
+      });
 
-		});
+    });
 
-		// Retrieve 10 wikipedia articles related to the search term and display them to the user
-		function search(term){
-			console.log("Search term entered: "+ $('#input-box').val());
-			var url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&list=search&exsentences=1&exintro=1&srsearch='+term+'&srlimit=10&callback=?';
+    // Retrieve 10 wikipedia articles related to the search term and display them to the user
+    function search(term){
+      console.log("Search term entered: "+ $('#input-box').val());
+      var url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&list=search&iwurl=1&exsentences=1&exintro=1&explaintext=1&exsectionformat=plain&srsearch='+term+'&srnamespace=0&srlimit=10&srprop=size%7Cwordcount%7Ctimestamp%7Csnippet&callback=?';
 
-			$.getJSON(url, function(res){
+      $.getJSON(url, function(res){
 
-				// Clear any existing search results
-				$('.articles').html('');
+        // Clear any existing search results
+        $('.articles').html('');
 
-				for (var i=0; i<10; i++){
-					var title = res['query']['search'][i]['title'];
-					var snippet = res['query']['search'][i]['snippet'];
-					$('.articles').append('<div><h3>'+title+'</h3><p>'+snippet+'</p></div>');
-				}
+        // Add wiki entries
+        for (var i=0; i<10; i++){
+          var title = res['query']['search'][i]['title'];
+          var snippet = res['query']['search'][i]['snippet'];
+          $('.articles').append('<a href="https://en.wikipedia.org/wiki/'+title+'"><br><div class="entry"><h3>'+title+'</h3><p>'+snippet+'</p></div></a>');
+        }
+      });
+    }
+  </script>
+</head>
 
-
-			});
-		}
-
-
-		</script>
-	</head>
-
-	<body>
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12 main">WIKI VIEWER</div>
-			</div>
-			<br><br>
-			<div class="row">			
-				<div class="input-group">
-					<input type="text" class="form-control" id="input-box" placeholder="Search for...">
-					<span class="input-group-btn"><button class="btn btn-success" type="button" id="go-button">Go!</button></span>
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="random-button btn btn-info">Random article</div>
-			</div>
-			<br><br>
-			<div class="articles">
-			</div>
-
-		</div>
-	</body>
-	</html>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 main">WIKI VIEWER</div>
+    </div>
+    <br><br>
+    <div class="row">     
+      <div class="input-group">
+        <input type="text" class="form-control" id="input-box" placeholder="Search for...">
+        <span class="input-group-btn"><button class="btn btn-success" type="button" id="go-button">Go!</button></span>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="random-button btn btn-info">Random article</div>
+    </div>
+    <br><br>
+    <div class="articles">
+    </div>
+    <br><br>
+  </div>
+</body>
+</html>
